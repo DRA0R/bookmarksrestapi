@@ -5,6 +5,7 @@ from src.constants.http_status_code import HTTP_400_BAD_REQUEST\
     , HTTP_204_NO_CONTENT
 from flask_jwt_extended import get_jwt_identity
 from flask_jwt_extended.view_decorators import jwt_required
+from flasgger import swag_from
 import validators
 
 
@@ -166,6 +167,7 @@ def deletebookmark(id):
 
 @bookmarks.get("/stats")
 @jwt_required()
+@swag_from('./docs/bookmarks/stats.yaml')
 def get_stats():
     current_user = get_jwt_identity()
     data = []
@@ -179,5 +181,5 @@ def get_stats():
             'short_url' : item.short_url
         }
         data.append(new_link)
-        
+
     return jsonify({'data' : data}), HTTP_200_OK
